@@ -17,7 +17,7 @@ rpc(Name, Request) ->
 			{Name, Response} -> Response
 		end.
 
-%% Main Server loop
+%% Main Server loop, wird durch Aufruf von start() als eigener Prozess gestartet.
 loop(Name, Mod, State) ->
 	receive
 		{From, Request} ->

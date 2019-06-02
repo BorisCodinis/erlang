@@ -9,7 +9,7 @@ get_blocks()     -> rpc(blockchain_server, {get_blocks}).
 %% Callback routines
 init() -> [get_genesis_block()].
 handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ [create_next_block(Data)]};
-handle({get_blocks}, Blockchain) -> {ok, Blockchain}.
+handle({get_blocks}, Blockchain) -> {{ok, Blockchain}, Blockchain}.
 
 %% Function implementations
 get_genesis_block() -> {0, "genesis block", 012876563735}.
