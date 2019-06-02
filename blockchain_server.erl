@@ -25,6 +25,10 @@ handle({get_blocks}, Blockchain) -> {{ok, Blockchain}, Blockchain}.
 
 %% Function implementations
 get_genesis_block() -> {0, "0", os:timestamp(), "genesis block", "0123456789"}.
+
+%% Erzeuge den nächsten Block.
+%% TODO: Neuen Block auf Validität prüfen
+%% TODO: Echten Hash über den Block berechnen
 generate_next_block(Data, [H|_]) -> 
 	{Index, _, _, _, Hash} = H,
 	NextIndex = Index + 1,
@@ -33,3 +37,4 @@ generate_next_block(Data, [H|_]) ->
 	NextData = Data,
 	NextHash = "0123456789", %% calculate_hash_for_block/1 muss noch implementiert werden
 	{NextIndex, NextPreviousHash, NextTimeStamp, NextData, NextHash}.
+
