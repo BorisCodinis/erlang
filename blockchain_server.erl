@@ -21,9 +21,21 @@ get_blocks()     -> rpc(blockchain_server, {get_blocks}).
 
 %% Callback routines
 init() -> [get_genesis_block()].
-handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ [create_next_block(Data)]};
+handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ [generate_next_block(Data, Blockchain)]};
 handle({get_blocks}, Blockchain) -> {{ok, Blockchain}, Blockchain}.
 
 %% Function implementations
-get_genesis_block() -> {0, "0", os:timestamp(), "genesis block", hash:get_hash("genesis block")}.
-create_next_block(Data) -> {1, Data, 8352936489}.
+get_genesis_block() -> {0, "0", os:timestamp(), "genesis block", hash:get_hash("genesis block").
+
+%% Erzeuge den nächsten Block.
+%% TODO: Neuen Block auf Validität prüfen
+%% TODO: Echten Hash über den Block berechnen
+generate_next_block(Data, [H|_]) -> 
+	{Index, _, _, _, Hash} = H,
+	NextIndex = Index + 1,
+	NextPreviousHash = Hash,
+	NextTimeStamp = os:timestamp(),
+	NextData = Data,
+	NextHash = "0123456789", %% calculate_hash_for_block/1 muss noch implementiert werden
+	{NextIndex, NextPreviousHash, NextTimeStamp, NextData, NextHash}.
+
