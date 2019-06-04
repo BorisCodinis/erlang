@@ -24,7 +24,7 @@ loop(Name, Mod, State) ->
 			
 			%% Verarbeite den Request mit der Methode handle() von Mod
 			{Response, State1} = Mod:handle(Request, State),
-
+			
 			%% Sende Response zurück zum Client
 			From ! {Name, Response},
 			

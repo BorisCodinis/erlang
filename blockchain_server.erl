@@ -21,21 +21,27 @@ get_blocks()     -> rpc(blockchain_server, {get_blocks}).
 
 %% Callback routines
 init() -> [get_genesis_block()].
-handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ [generate_next_block(Data, Blockchain)]};
+handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ generate_next_block(Data, lists:last(Blockchain))};
 handle({get_blocks}, Blockchain) -> {{ok, Blockchain}, Blockchain}.
 
 %% Function implementations
-get_genesis_block() -> {0, "0", os:timestamp(), "genesis block", hash:get_hash("genesis block").
+get_genesis_block() ->
+	TS = os:timestamp(),
+	{0, "0", TS, "genesis block", calculate_hash_for_block(0, "0", TS, "genesis block")}.
 
 %% Erzeuge den nächsten Block.
 %% TODO: Neuen Block auf Validität prüfen
-%% TODO: Echten Hash über den Block berechnen
-generate_next_block(Data, [H|_]) -> 
-	{Index, _, _, _, Hash} = H,
+
+generate_next_block(Data, LastBlock) ->
+	{Index, _, _, _, Hash} = LastBlock,
 	NextIndex = Index + 1,
 	NextPreviousHash = Hash,
 	NextTimeStamp = os:timestamp(),
 	NextData = Data,
-	NextHash = "0123456789", %% calculate_hash_for_block/1 muss noch implementiert werden
-	{NextIndex, NextPreviousHash, NextTimeStamp, NextData, NextHash}.
+	NextHash = calculate_hash_for_block(NextIndex, Hash, NextTimeStamp, Data), %% calculate_hash_for_block/1 muss noch implementiert werden
+	[{NextIndex, NextPreviousHash, NextTimeStamp, NextData, NextHash}].
 
+calculate_hash_for_block(Index, PrevHash, Timestamp, Data) ->
+
+	BlockToBeHashed = integer_to_list(Index) ++ PrevHash ++ integer_to_list(element(1, Timestamp)) ++ integer_to_list(element(2, Timestamp)) ++ integer_to_list(element(3, Timestamp)) ++ Data,
+	hash:get_hash(BlockToBeHashed).
