@@ -1,2 +1,0 @@
-# Simple Erlang Blockchain
-## Requirements:
