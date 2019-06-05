@@ -50,6 +50,8 @@ generate_next_block(Data, LastBlock) ->
 	
 	%% Check whether new Block is valid
 	true = is_valid_new_block(NewBlock, LastBlock),
+
+	%% If all went well, return new block.
 	[NewBlock].
 
 calculate_hash_for_block(Index, PrevHash, Timestamp, Data) ->
