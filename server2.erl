@@ -1,6 +1,10 @@
 -module(server2).
 -export([start/2, rpc/2]).
 
+%%
+%% DEPRECATED
+%%
+
 %% Funktion start, akzeptiert zwei Argumente
 %% Name: Name des zu startenden Serverprozesses (???)
 %% Mod: Callbackhandler (???)
