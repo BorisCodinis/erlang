@@ -1,6 +1,6 @@
 -module(blockchain_server).
 -export([init/0, mine_block/1, get_blocks/0, handle/2]).
--import(server1, [rpc/2]).
+-import(server2, [rpc/2]).
 -import(hash, [get_hash/1]).
 
 %%
