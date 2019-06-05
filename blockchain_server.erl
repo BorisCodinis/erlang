@@ -46,7 +46,11 @@ generate_next_block(Data, LastBlock) ->
 	NextTimeStamp = os:timestamp(),
 	NextData = Data,
 	NextHash = calculate_hash_for_block(NextIndex, Hash, NextTimeStamp, Data),
-	[{NextIndex, NextPreviousHash, NextTimeStamp, NextData, NextHash}].
+	NewBlock = {NextIndex, NextPreviousHash, NextTimeStamp, NextData, NextHash},
+	
+	%% Check whether new Block is valid
+	true = is_valid_new_block(NewBlock, LastBlock),
+	[NewBlock].
 
 calculate_hash_for_block(Index, PrevHash, Timestamp, Data) ->
 	BlockToBeHashed = 
@@ -57,3 +61,28 @@ calculate_hash_for_block(Index, PrevHash, Timestamp, Data) ->
 		++ integer_to_list(element(3, Timestamp)) 
 		++ Data,
 	hash:get_hash(BlockToBeHashed).
+
+%% Check whether a block is valid, e.g. matches the previous block
+%% All checks are done using pattern matching, so if a match fails, the whole function fails.
+is_valid_new_block(NewBlock, PreviousBlock) ->
+
+	%% Extract fields from Blocks
+	{NewIndex, NewPreviousHash, NewTimeStamp, NewData, NewHash} = NewBlock,
+	{PreviousIndex, _, _, _, PreviousHash} = PreviousBlock,
+	
+	%% Check index
+	NewIndex = (PreviousIndex + 1),
+
+	%% Check previous hash for new block
+	NewPreviousHash = PreviousHash,
+
+	%% Check new Hash
+	CorrectNewHash = calculate_hash_for_block(NewIndex, NewPreviousHash, NewTimeStamp, NewData),
+	NewHash = CorrectNewHash,
+
+	%% If all went well, return true.
+	true. 
+	
+
+
+
