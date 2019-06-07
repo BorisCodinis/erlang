@@ -1,3 +1,9 @@
+
+%%
+%% This is a node!
+%%
+
+
 -module(server4).
 -export([start/2, rpc/2, swap_code/2]).
 
@@ -26,6 +32,9 @@ rpc(Name, Request) ->
 %% Main Server loop, wird durch Aufruf von start() als eigener Prozess gestartet.
 loop(Name, Mod, OldState) ->
 	receive
+
+		%%
+		%% TODO: Implement receive broadcast messge from other node
 
 		%% Hot Swap Mod (and thereby the available client routines and callbacks).
 		{From, {swap_code, NewCallbackMod}} ->

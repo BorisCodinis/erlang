@@ -21,7 +21,12 @@ get_blocks()     -> rpc(blockchain_server, {get_blocks}).
 
 %%
 %% Callback routines
+%%
+%% TODO: Implement handle_broadcast/2 (see naivechain)
+%%
 init() -> [get_genesis_block()].
+
+%% TODO: Implement broadcast newly created blockchain to other nodes.
 handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ generate_next_block(Data, lists:last(Blockchain))};
 handle({get_blocks}, Blockchain) 	   -> {{ok, Blockchain}, Blockchain}.
 
@@ -38,7 +43,6 @@ get_genesis_block() ->
 	{Index, PreviousHash, TimeStamp, Data, Hash}.
 
 %% Erzeuge den nächsten Block.
-%% TODO: Neuen Block auf Validität prüfen
 generate_next_block(Data, LastBlock) ->
 	{Index, _, _, _, Hash} = LastBlock,
 	NextIndex = Index + 1,
