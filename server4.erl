@@ -32,9 +32,8 @@ rpc(Name, Request) ->
 %% Main Server loop, wird durch Aufruf von start() als eigener Prozess gestartet.
 loop(Name, Mod, OldState) ->
 	receive
-
-		{From, {broadcast, Message}} ->
-		%% Hot Swap Mod (and thereby the available client routines and callbacks).
+		
+%% Hot Swap Mod (and thereby the available client routines and callbacks).
 		{From, {swap_code, NewCallbackMod}} ->
 			From ! {Name, ok, ack},
 			
