@@ -25,6 +25,7 @@ init() -> [get_genesis_block()].
 
 %% TODO: Implement broadcast newly created blockchain to other nodes.
 %% TODO: Implement handle broadcast messages
+%% ISSUE: ++ List operator is very inefficient as it copies the whole list every time it is used
 handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ generate_next_block(Data, lists:last(Blockchain))};
 handle({get_blocks}, Blockchain) 	   -> {{ok, Blockchain}, Blockchain}.
 
@@ -85,20 +86,25 @@ is_valid_new_block(NewBlock, PreviousBlock) ->
 	NewHash = CorrectNewHash,
 
 	%% If all went well, return true.
+	%% TODO: Is this ideomatic erlang?
 	true. 
 	
 %% Check whether a whole blockchain is valid
 is_valid_chain(Blockchain) ->
+	[GenesisBlock|_] = Blockchain,
+	true = is_valid_genesis_block(GenesisBlock),
+	true = is_continuous_chain(Blockchain).
+	
+is_valid_genesis_block(Block) ->
+	Block = get_genesis_block(),
+	true.
 
-	%% Check whether first block is genesis block
-	[H|T] = Blockchain,
-	GenesisBlock = get_genesis_block(),
-	H = GenesisBlock,  %% This fails if first block is not genesis block
-
-	%% Check the rest of the chain
-	%% TODO: Function to traverse whole blockchain and check validity as there is no for loop in erlang...
-
-
+is_continuous_chain([FirstBlock, SecondBlock | T]) ->
+	true = is_valid_new_block(SecondBlock, FirstBlock),
+	is_continuous_chain([SecondBlock | T]);
+is_continuous_chain([_SingleBlock]) ->
+	true.
+	
 
 
 
