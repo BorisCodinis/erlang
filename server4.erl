@@ -1,6 +1,6 @@
 
 %%
-%% This is a node!
+%% This module represents a peer (as in naivechain).
 %%
 
 
