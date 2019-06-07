@@ -21,9 +21,6 @@ get_blocks()     -> rpc(blockchain_server, {get_blocks}).
 
 %%
 %% Callback routines
-%%
-%% TODO: Implement handle_broadcast/2 (see naivechain)
-%%
 init() -> [get_genesis_block()].
 
 %% TODO: Implement broadcast newly created blockchain to other nodes.
