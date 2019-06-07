@@ -27,6 +27,7 @@ get_blocks()     -> rpc(blockchain_server, {get_blocks}).
 init() -> [get_genesis_block()].
 
 %% TODO: Implement broadcast newly created blockchain to other nodes.
+%% TODO: Implement handle broadcast messages
 handle({mine_block, Data}, Blockchain) -> {ok, Blockchain ++ generate_next_block(Data, lists:last(Blockchain))};
 handle({get_blocks}, Blockchain) 	   -> {{ok, Blockchain}, Blockchain}.
 

@@ -33,9 +33,7 @@ rpc(Name, Request) ->
 loop(Name, Mod, OldState) ->
 	receive
 
-		%%
-		%% TODO: Implement receive broadcast messge from other node
-
+		{From, {broadcast, Message}} ->
 		%% Hot Swap Mod (and thereby the available client routines and callbacks).
 		{From, {swap_code, NewCallbackMod}} ->
 			From ! {Name, ok, ack},
