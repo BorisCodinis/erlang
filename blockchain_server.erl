@@ -87,6 +87,25 @@ is_valid_new_block(NewBlock, PreviousBlock) ->
 	%% If all went well, return true.
 	true. 
 	
+%% Check whether a whole blockchain is valid
+is_valid_chain(Blockchain) ->
+
+	%% Check whether first block is genesis block
+	[H|T] = Blockchain,
+	GenesisBlock = get_genesis_block(),
+	H = GenesisBlock,  %% This fails if first block is not genesis block
+
+	%% Check the rest of the chain
+	%% TODO: Function to traverse whole blockchain and check validity as there is no for loop in erlang...
+
+
+
+
+
+
+
+
+
 
 
 
