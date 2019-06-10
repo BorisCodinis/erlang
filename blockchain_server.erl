@@ -1,5 +1,5 @@
 -module(blockchain_server).
--export([init/0, mine_block/1, get_blocks/0, handle/2]).
+-export([init/0, mine_block/1, get_blocks/0, handle/2, is_valid_chain/1]).
 -import(server4, [rpc/2]).
 -import(hash, [get_hash/1]).
 
@@ -34,7 +34,7 @@ handle({get_blocks}, Blockchain) 	   -> {{ok, Blockchain}, Blockchain}.
 get_genesis_block() ->
 	Index = 0,
 	PreviousHash = "0",
-	TimeStamp = os:timestamp(),
+	TimeStamp = {0000,000000,000000}, %% timestamp must be hardcoded for is_valid_chain to work.
 	Data = "genesis block",
 	Hash = calculate_hash_for_block(Index, PreviousHash, TimeStamp, Data),
 
@@ -99,9 +99,9 @@ is_valid_genesis_block(Block) ->
 	Block = get_genesis_block(),
 	true.
 
-is_continuous_chain([FirstBlock, SecondBlock | T]) ->
+is_continuous_chain([FirstBlock, SecondBlock|T]) ->
 	true = is_valid_new_block(SecondBlock, FirstBlock),
-	is_continuous_chain([SecondBlock | T]);
+	is_continuous_chain([SecondBlock|T]);
 is_continuous_chain([_SingleBlock]) ->
 	true.
 	

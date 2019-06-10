@@ -33,7 +33,7 @@ rpc(Name, Request) ->
 loop(Name, Mod, OldState) ->
 	receive
 		
-%% Hot Swap Mod (and thereby the available client routines and callbacks).
+		%% Hot Swap Mod (and thereby the available client routines and callbacks).
 		{From, {swap_code, NewCallbackMod}} ->
 			From ! {Name, ok, ack},
 			
