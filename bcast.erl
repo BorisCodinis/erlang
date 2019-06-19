@@ -20,15 +20,13 @@ init(Name) ->
 	loop(Name, Peers).
 
 loop(Name, Peers) ->
+	io:fwrite("~p: ~p~n", [Name, Peers]),
 	receive
 		{request_peers, From} ->
 			From ! {response_peers, Peers, self()},
 			loop(Name, Peers);
 		{response_peers, ResponsePeers, From} ->
-			%% io:write(From),
-			%% io:write(" send peer list.~n"),
 			UniqPeers = add_peers(Peers, ResponsePeers),
-			[io:fwrite("~p: ~p~n", [{self(), node()}, P]) || P <- Peers],
 			loop(Name, UniqPeers)
 	end.
 
